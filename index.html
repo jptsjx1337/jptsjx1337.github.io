@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>jptsjx1337 — Portfolio</title>
+  <meta name="description" content="Portfolio of jptsjx1337 — a game developer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Canvas Paint Effect -->
+  <canvas id="paint"></canvas>
+
+  <header class="site-header">
+    <div class="container header-inner glass">
+      <img src="assets/avatar.PNG" class="logo">
+      <nav class="nav">
+        <!-- Intentionally minimal per user's spec; no 'Are you looking for a talent?' and no GitHub stars -->
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#chat">Ask me</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero container">
+      <div class="hero-text glass">
+        <h1>Hey, I’m <span class="accent">jptsjx1337</span> 👋</h1>
+        <p class="subtitle">A game developer</p>
+        <p class="subtitle1">I am a Game Developer powered by Unreal Engine, where I craft game logic, design animation state machines, and contribute to the overall concept and vision. I'm constantly working on personal projects, and you can follow their evolution right here.</p>
+      </div>
+      <div class="hero-media glass">
+        <img src="assets/avatar.PNG" alt="Your photo placeholder" class="avatar" />
+      </div>
+    </section>
+
+    <!-- PROJECTS PREVIEW -->
+    <section id="projects" class="container section">
+      <h2 class="section-title">Featured projects</h2>
+
+      <div class="cards">
+        <article class="card glass">
+          <h3 class="card-title">The Boys: Ascent <span class="tag">Fan project</span></h3>
+          <p class="card-desc">
+            The Boys: Ascent is a third-person action game built with Unreal Engine 5, inspired by the TV series The Boys. The project features 10 playable characters with unique superpowers, a storyline with missions across multiple cities including New York, and a multiplayer mode where players can explore the city together. This is a fan-made project created for educational and portfolio purposes only, with no rights or affiliation to the creators of The Boys.
+          </p>
+          <div class="card-actions">
+            <a class="btn" href="#" aria-disabled="true" title="Demo link (placeholder)">Demo</a>
+            <a class="btn" href="#" aria-disabled="true" title="Devlog link (placeholder)">Devlog</a>
+            <a class="btn" href="#" aria-disabled="true" title="Repository link (placeholder)">Code</a>
+          </div>
+        </article>
+
+        <article class="card glass">
+          <h3 class="card-title">WIP <span class="tag">Solo</span></h3>
+          <p class="card-desc">
+            WIP
+          </p>
+          <div class="card-actions">
+            <a class="btn" href="#" aria-disabled="true">Play</a>
+            <a class="btn" href="#" aria-disabled="true">Read more</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ASK ME ANYTHING (scripted keywords, not AI) -->
+    <section id="chat" class="container section">
+      <h2 class="section-title">Ask me anything</h2>
+      <p class="muted">This chat uses predefined keywords and answers (no AI). Type a greeting or one of the keywords to see a response.</p>
+      <div class="chat glass">
+        <div id="chat-history" class="chat-history" aria-live="polite" aria-label="Chat history"></div>
+        <form id="chat-form" class="chat-input" autocomplete="off">
+          <input id="chat-text" type="text" placeholder="Type here…" aria-label="Message" required />
+          <button class="btn" type="submit" title="Send">Send</button>
+        </form>
+      </div>
+      <div class="keywords glass">
+        <h3>Available keywords</h3>
+        <ul>
+          <li><code>hello</code></li>
+          <li><code>projects</code></li>
+          <li><code>skills</code></li>
+          <li><code>goals</code></li>
+          <li><code>hobbies</code></li>
+          <li><code>contact</code></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="container section">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-grid">
+        <div class="glass contact-card">
+          <h3>Links</h3>
+          <ul class="links">
+            <li><a href="#" aria-disabled="true">ArtStation (soon)</a></li>
+            <li><a href="http://discordapp.com/users/843927801291472986" aria-disabled="false">Discord</a></li>
+            <li><a href="https://github.com/jptsjx1337" aria-disabled="false">GitHub</a></li>
+          </ul>
+        </div>
+        <div class="glass contact-card">
+          <h3>About</h3>
+          <p>
+            I am a passionate developer with a strong focus on game design and technology. Over the past 2 years, I have been working with Unreal Engine 5, creating ambitious projects that combine cinematic visuals, complex mechanics, and immersive storytelling. In addition, I have 3 years of programming experience in C++, which gives me a solid foundation for building gameplay systems, optimising performance, and pushing technical boundaries. Beyond pure development, I pay great attention to design, user experience, and creativity—always striving to make my projects stand out visually and conceptually. My portfolio reflects both technical depth and artistic vision, and I am constantly learning new tools and approaches to stay ahead in game development.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <p class="muted">© <span id="year"></span> jptsjx1337</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+<canvas id="fluid"></canvas>
+
+<script>
+/* =======================
+   Простые настройки
+   ======================= */
+const CONFIG = {
+  SIM_RESOLUTION: 128,
+  DYE_RESOLUTION: 1024,
+  DENSITY_DISSIPATION: 0.5,
+  VELOCITY_DISSIPATION: 2.5,
+  PRESSURE: 0.8,
+  PRESSURE_ITERATIONS: 20,
+  CURL: 20.0,
+  SPLAT_RADIUS: 0.01,      // относительный радиус (0..1 от меньшей стороны)
+  SPLAT_FORCE: 5000.0,
+  SHADING: true,
+  DRAW_ONLY_WHEN_PRESSED: false, // <-- рисовать только при зажатой мыши
+};
+
+/* =======================
+   Вспомогалки
+   ======================= */
+function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+function createFBO(gl, w, h, internalFormat, format, type, filter) {
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+
+  const fbo = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+
+  gl.viewport(0, 0, w, h);
+  gl.clearColor(0,0,0,1);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  return { tex, fbo, width: w, height: h };
+}
+function createDoubleFBO(gl, w, h, internalFormat, format, type, filter){
+  const fbo1 = createFBO(gl, w, h, internalFormat, format, type, filter);
+  const fbo2 = createFBO(gl, w, h, internalFormat, format, type, filter);
+  return {
+    get read(){ return fbo1; },
+    get write(){ return fbo2; },
+    swap(){ const t=fbo1.tex; fbo1.tex=fbo2.tex; fbo2.tex=t;
+            const fb=fbo1.fbo; fbo1.fbo=fbo2.fbo; fbo2.fbo=fb; }
+  };
+}
+function compileShader(gl, type, source){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, source);
+  gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){
+    console.error(gl.getShaderInfoLog(s));
+  }
+  return s;
+}
+function createProgram(gl, vsSource, fsSource) {
+  const vs = compileShader(gl, gl.VERTEX_SHADER, vsSource);
+  const fs = compileShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  const p  = gl.createProgram();
+  gl.attachShader(p, vs);
+  gl.attachShader(p, fs);
+  gl.bindAttribLocation(p, 0, 'aPosition');
+  gl.linkProgram(p);
+  if(!gl.getProgramParameter(p, gl.LINK_STATUS)){
+    console.error(gl.getProgramInfoLog(p));
+  }
+  return p;
+}
+
+/* =======================
+   Шейдеры
+   ======================= */
+const baseVertexShader = `
+precision highp float;
+attribute vec2 aPosition;
+varying vec2 vUv;
+uniform vec2 texelSize;
+void main() {
+  vUv = aPosition * 0.5 + 0.5;
+  gl_Position = vec4(aPosition, 0.0, 1.0);
+}
+`;
+
+const copyShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uTexture;
+void main(){
+  gl_FragColor = texture2D(uTexture, vUv);
+}
+`;
+
+const clearShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uTexture;
+uniform float value;
+void main(){
+  gl_FragColor = value * texture2D(uTexture, vUv);
+}
+`;
+
+const displayShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uTexture;
+uniform vec2 texelSize;
+uniform bool shading;
+vec3 linearToGamma(vec3 c){
+  c = max(c, vec3(0.0));
+  return max(1.055 * pow(c, vec3(1.0/2.4)) - 0.055, vec3(0.0));
+}
+void main(){
+  vec3 c = texture2D(uTexture, vUv).rgb;
+  if (shading) {
+    vec3 l = texture2D(uTexture, vUv + vec2(texelSize.x, 0.0)).rgb;
+    vec3 r = texture2D(uTexture, vUv - vec2(texelSize.x, 0.0)).rgb;
+    vec3 t = texture2D(uTexture, vUv + vec2(0.0, texelSize.y)).rgb;
+    vec3 b = texture2D(uTexture, vUv - vec2(0.0, texelSize.y)).rgb;
+    float dx = length(l) - length(r);
+    float dy = length(t) - length(b);
+    vec3 n = normalize(vec3(dx, dy, texelSize.x + texelSize.y));
+    float diff = clamp(dot(n, vec3(0.0,0.0,1.0)) + 0.7, 0.7, 1.0);
+    c *= diff;
+  }
+  gl_FragColor = vec4(c, 1.0);
+}
+`;
+
+const splatShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uTarget;
+uniform float aspectRatio;
+uniform vec3 color;
+uniform vec2 point;
+uniform float radius;
+void main(){
+  vec2 p = vUv - point;
+  p.x *= aspectRatio;
+  float splat = exp(-dot(p,p)/radius);
+  vec3 base = texture2D(uTarget, vUv).rgb;
+  gl_FragColor = vec4(base + color * splat, 1.0);
+}
+`;
+
+const advectionShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uVelocity;
+uniform sampler2D uSource;
+uniform vec2 texelSize;
+uniform float dt;
+uniform float dissipation;
+void main(){
+  vec2 v = texture2D(uVelocity, vUv).xy;
+  vec2 coord = vUv - dt * v * texelSize;
+  vec4 result = texture2D(uSource, coord);
+  float decay = 1.0 + dissipation * dt;
+  gl_FragColor = result / decay;
+}
+`;
+
+const divergenceShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uVelocity;
+uniform vec2 texelSize;
+void main(){
+  float L = texture2D(uVelocity, vUv - vec2(texelSize.x, 0.0)).x;
+  float R = texture2D(uVelocity, vUv + vec2(texelSize.x, 0.0)).x;
+  float T = texture2D(uVelocity, vUv + vec2(0.0, texelSize.y)).y;
+  float B = texture2D(uVelocity, vUv - vec2(0.0, texelSize.y)).y;
+  float div = 0.5 * (R - L + T - B);
+  gl_FragColor = vec4(div,0.0,0.0,1.0);
+}
+`;
+
+const curlShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uVelocity;
+uniform vec2 texelSize;
+void main(){
+  float L = texture2D(uVelocity, vUv - vec2(texelSize.x, 0.0)).y;
+  float R = texture2D(uVelocity, vUv + vec2(texelSize.x, 0.0)).y;
+  float T = texture2D(uVelocity, vUv + vec2(0.0, texelSize.y)).x;
+  float B = texture2D(uVelocity, vUv - vec2(0.0, texelSize.y)).x;
+  float vorticity = R - L - T + B;
+  gl_FragColor = vec4(0.5 * vorticity, 0.0, 0.0, 1.0);
+}
+`;
+
+const vorticityShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uVelocity;
+uniform sampler2D uCurl;
+uniform vec2 texelSize;
+uniform float curl;
+uniform float dt;
+void main(){
+  float L = texture2D(uCurl, vUv - vec2(texelSize.x, 0.0)).x;
+  float R = texture2D(uCurl, vUv + vec2(texelSize.x, 0.0)).x;
+  float T = texture2D(uCurl, vUv + vec2(0.0, texelSize.y)).x;
+  float B = texture2D(uCurl, vUv - vec2(0.0, texelSize.y)).x;
+  float C = texture2D(uCurl, vUv).x;
+  vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));
+  force /= length(force) + 0.0001;
+  force *= curl * C;
+  force.y *= -1.0;
+
+  vec2 velocity = texture2D(uVelocity, vUv).xy;
+  velocity += force * dt;
+  velocity = clamp(velocity, vec2(-1000.0), vec2(1000.0));
+  gl_FragColor = vec4(velocity, 0.0, 1.0);
+}
+`;
+
+const pressureShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uPressure;
+uniform sampler2D uDivergence;
+uniform vec2 texelSize;
+void main(){
+  float L = texture2D(uPressure, vUv - vec2(texelSize.x, 0.0)).x;
+  float R = texture2D(uPressure, vUv + vec2(texelSize.x, 0.0)).x;
+  float T = texture2D(uPressure, vUv + vec2(0.0, texelSize.y)).x;
+  float B = texture2D(uPressure, vUv - vec2(0.0, texelSize.y)).x;
+  float C = texture2D(uPressure, vUv).x;
+  float div = texture2D(uDivergence, vUv).x;
+  float p = (L + R + T + B - div) * 0.25;
+  gl_FragColor = vec4(p,0.0,0.0,1.0);
+}
+`;
+
+const gradSubtractShader = `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uPressure;
+uniform sampler2D uVelocity;
+uniform vec2 texelSize;
+void main(){
+  float L = texture2D(uPressure, vUv - vec2(texelSize.x, 0.0)).x;
+  float R = texture2D(uPressure, vUv + vec2(texelSize.x, 0.0)).x;
+  float T = texture2D(uPressure, vUv + vec2(0.0, texelSize.y)).x;
+  float B = texture2D(uPressure, vUv - vec2(0.0, texelSize.y)).x;
+  vec2 v = texture2D(uVelocity, vUv).xy;
+  v -= vec2(R - L, T - B);
+  gl_FragColor = vec4(v, 0.0, 1.0);
+}
+`;
+
+/* =======================
+   Инициализация WebGL
+   ======================= */
+const canvas = document.getElementById('fluid');
+const gl = (() => {
+  const params = { alpha: true, depth: false, stencil: false, antialias: false, preserveDrawingBuffer: false };
+  let g = canvas.getContext('webgl2', params);
+  if (!g) g = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+  if (!g) alert('WebGL not supported');
+  return g;
+})();
+
+let ext = {};
+let halfFloatType, supportLinear;
+if (gl.getContextAttributes().alpha) gl.clearColor(0,0,0,0); else gl.clearColor(0,0,0,1);
+
+if (gl instanceof WebGL2RenderingContext) {
+  gl.getExtension('EXT_color_buffer_float');
+  supportLinear = true;
+  halfFloatType = gl.HALF_FLOAT;
+} else {
+  const extHF = gl.getExtension('OES_texture_half_float');
+  const extHFlinear = gl.getExtension('OES_texture_half_float_linear');
+  supportLinear = !!extHFlinear;
+  halfFloatType = extHF ? extHF.HALF_FLOAT_OES : gl.UNSIGNED_BYTE;
+}
+
+const RGBA16F = (gl instanceof WebGL2RenderingContext) ? gl.RGBA16F : gl.RGBA;
+const RG16F  = (gl instanceof WebGL2RenderingContext) ? gl.RG16F  : gl.RGBA;
+const R16F   = (gl instanceof WebGL2RenderingContext) ? gl.R16F   : gl.RGBA;
+const LINEAR = supportLinear ? gl.LINEAR : gl.NEAREST;
+
+/* Фуллскрин-квад */
+const quadVBO = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, quadVBO);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+  -1,-1,  -1,1,  1,1,  1,-1
+]), gl.STATIC_DRAW);
+const quadIBO = gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, quadIBO);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0,1,2, 0,2,3]), gl.STATIC_DRAW);
+
+function bindQuad(program){
+  gl.useProgram(program);
+  const loc = gl.getAttribLocation(program, 'aPosition');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+}
+function drawTo(targetFBO, clear = false){
+  if (targetFBO) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, targetFBO.fbo);
+    gl.viewport(0, 0, targetFBO.width, targetFBO.height);
+  } else {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+  }
+  if (clear) {
+    gl.clearColor(0,0,0,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+  }
+  gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+}
+
+/* Программы */
+const progCopy        = createProgram(gl, baseVertexShader, copyShader);
+const progClear       = createProgram(gl, baseVertexShader, clearShader);
+const progDisplay     = createProgram(gl, baseVertexShader, displayShader);
+const progSplat       = createProgram(gl, baseVertexShader, splatShader);
+const progAdvection   = createProgram(gl, baseVertexShader, advectionShader);
+const progDivergence  = createProgram(gl, baseVertexShader, divergenceShader);
+const progCurl        = createProgram(gl, baseVertexShader, curlShader);
+const progVorticity   = createProgram(gl, baseVertexShader, vorticityShader);
+const progPressure    = createProgram(gl, baseVertexShader, pressureShader);
+const progGradSub     = createProgram(gl, baseVertexShader, gradSubtractShader);
+
+/* Буферы */
+let velocity, dye, pressure, divergence, curl, texelSize = { x: 1, y: 1 };
+function createFBOs() {
+  const sim = getResolution(CONFIG.SIM_RESOLUTION);
+  const dyeRes = getResolution(CONFIG.DYE_RESOLUTION);
+  velocity  = createDoubleFBO(gl, sim.width, sim.height, RG16F, gl.RG, halfFloatType, LINEAR);
+  dye       = createDoubleFBO(gl, dyeRes.width, dyeRes.height, RGBA16F, gl.RGBA, halfFloatType, LINEAR);
+  pressure  = createDoubleFBO(gl, sim.width, sim.height, R16F, gl.RED, halfFloatType, gl.NEAREST);
+  divergence= createFBO(gl, sim.width, sim.height, R16F, gl.RED, halfFloatType, gl.NEAREST);
+  curl      = createFBO(gl, sim.width, sim.height, R16F, gl.RED, halfFloatType, gl.NEAREST);
+  texelSize.x = 1.0 / sim.width;
+  texelSize.y = 1.0 / sim.height;
+}
+function getResolution(base) {
+  let w = gl.drawingBufferWidth, h = gl.drawingBufferHeight;
+  const aspect = w / h;
+  if (aspect < 1) w = Math.round(base), h = Math.round(base / aspect);
+  else            h = Math.round(base), w = Math.round(base * aspect);
+  return { width: w, height: h };
+}
+function resizeCanvas() {
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  const w = Math.floor(canvas.clientWidth * dpr);
+  const h = Math.floor(canvas.clientHeight * dpr);
+  if (canvas.width !== w || canvas.height !== h) {
+    canvas.width = w; canvas.height = h;
+    gl.viewport(0, 0, w, h);
+    createFBOs();
+  }
+}
+function setUniform2(p, name, x, y){ const loc = gl.getUniformLocation(p, name); gl.uniform2f(loc, x, y); }
+function setUniform1(p, name, v){ const loc = gl.getUniformLocation(p, name); gl.uniform1f(loc, v); }
+function setUniform1i(p, name, v){ const loc = gl.getUniformLocation(p, name); gl.uniform1i(loc, v); }
+function attachTex(unit, tex){
+  gl.activeTexture(gl.TEXTURE0 + unit);
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+}
+
+/* =======================
+   Ввод (мышь/тач)
+   ======================= */
+let pointer = {
+  down: false,
+  moved: false,
+  x: 0, y: 0,
+  px: 0, py: 0,
+  dx: 0, dy: 0,
+  color: randColor(),
+};
+function randColor(){
+  // насыщенные цвета, дальше слегка приглушим
+  let h = Math.random();
+  let r,g,b;
+  const i = Math.floor(h*6);
+  const f = h*6 - i;
+  const q = 1 - f;
+  switch(i % 6){
+    case 0: r=1; g=f; b=0; break;
+    case 1: r=q; g=1; b=0; break;
+    case 2: r=0; g=1; b=f; break;
+    case 3: r=0; g=q; b=1; break;
+    case 4: r=f; g=0; b=1; break;
+    case 5: r=1; g=0; b=q; break;
+  }
+  // приглушаем, чтобы на черном было не кислотно
+  return [r*0.15, g*0.15, b*0.15];
+}
+function BlueColor() {
+  return [0.2*0.15, 0.4*0.15, 1.0*0.15];
+}
+
+function getPointerPos(e){
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: ( (e.clientX - rect.left) / rect.width ),
+    y: ( 1.0 - (e.clientY - rect.top) / rect.height )
+  };
+}
+window.addEventListener('mousedown', (e)=>{
+  if (CONFIG.DRAW_ONLY_WHEN_PRESSED) pointer.down = true;
+  const p = getPointerPos(e);
+  pointer.x = pointer.px = p.x; pointer.y = pointer.py = p.y;
+  pointer.dx = pointer.dy = 0;
+  pointer.color = randColor();
+  // стартовый сплэт — красивый всплеск
+  splat(pointer.x, pointer.y, (Math.random()-0.5)*10.0, (Math.random()-0.5)*30.0, [pointer.color[0]*10, pointer.color[1]*10, pointer.color[2]*10]);
+});
+window.addEventListener('mouseup', ()=>{ pointer.down = false; });
+window.addEventListener('mousemove', (e)=>{
+  const p = getPointerPos(e);
+  pointer.px = pointer.x; pointer.py = pointer.y;
+  pointer.x = p.x; pointer.y = p.y;
+  pointer.dx = pointer.x - pointer.px;
+  pointer.dy = pointer.y - pointer.py;
+  pointer.moved = (Math.abs(pointer.dx) > 0 || Math.abs(pointer.dy) > 0);
+  if (!CONFIG.DRAW_ONLY_WHEN_PRESSED || pointer.down) {
+    pointer.color = BlueColor();
+    applyPointer();
+  }
+});
+
+/* Тач */
+window.addEventListener('touchstart', (e)=>{
+  if (CONFIG.DRAW_ONLY_WHEN_PRESSED) pointer.down = true;
+  const t = e.targetTouches[0];
+  const p = getPointerPos(t);
+  pointer.x = pointer.px = p.x; pointer.y = pointer.py = p.y;
+  pointer.dx = pointer.dy = 0;
+  pointer.color = randColor();
+}, {passive:true});
+window.addEventListener('touchend', ()=>{ pointer.down = false; }, {passive:true});
+window.addEventListener('touchmove', (e)=>{
+  const t = e.targetTouches[0];
+  const p = getPointerPos(t);
+  pointer.px = pointer.x; pointer.py = pointer.y;
+  pointer.x = p.x; pointer.y = p.y;
+  pointer.dx = pointer.x - pointer.px;
+  pointer.dy = pointer.y - pointer.py;
+  pointer.moved = true;
+  if (!CONFIG.DRAW_ONLY_WHEN_PRESSED || pointer.down) {
+    applyPointer();
+  }
+}, {passive:true});
+
+/* Применение ввода: «splat» в скорость + краску */
+function applyPointer(){
+  if (!pointer.moved) return;
+  const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
+  const fX = pointer.dx * CONFIG.SPLAT_FORCE;
+  const fY = -pointer.dy * CONFIG.SPLAT_FORCE;
+
+  // В скорость — векторный сплэт (здесь кладем силу в цвет (x,y,0))
+  gl.useProgram(progSplat);
+  setUniform1i(progSplat, 'uTarget', 0);
+  setUniform1(progSplat, 'aspectRatio', aspect);
+  setUniform2(progSplat, 'point', pointer.x, pointer.y);
+  setUniform1(progSplat, 'radius', CONFIG.SPLAT_RADIUS * (aspect>1.0 ? aspect : 1.0));
+  // цвет как сила: (fx, fy, 0)
+  const velColor = [fX, fY, 0.0];
+  gl.uniform3f(gl.getUniformLocation(progSplat, 'color'), velColor[0], velColor[1], velColor[2]);
+  bindQuad(progSplat);
+  attachTex(0, velocity.read.tex);
+  drawTo(velocity.write);
+  velocity.swap();
+
+  // В краску — цветной сплэт
+  gl.useProgram(progSplat);
+  setUniform1i(progSplat, 'uTarget', 0);
+  setUniform1(progSplat, 'aspectRatio', aspect);
+  setUniform2(progSplat, 'point', pointer.x, pointer.y);
+  setUniform1(progSplat, 'radius', CONFIG.SPLAT_RADIUS * (aspect>1.0 ? aspect : 1.0));
+  gl.uniform3f(gl.getUniformLocation(progSplat, 'color'), pointer.color[0], pointer.color[1], pointer.color[2]);
+  bindQuad(progSplat);
+  attachTex(0, dye.read.tex);
+  drawTo(dye.write);
+  dye.swap();
+}
+
+/* =======================
+   Симуляция
+   ======================= */
+let lastTime = performance.now();
+function update(){
+  const now = performance.now();
+  let dt = (now - lastTime) / 1000.0;
+  lastTime = now;
+  dt = Math.min(dt, 1/30); // стабильность
+
+  // curl
+  gl.useProgram(progCurl);
+  bindQuad(progCurl);
+  setUniform1i(progCurl, 'uVelocity', 0);
+  setUniform2(progCurl, 'texelSize', texelSize.x, texelSize.y);
+  attachTex(0, velocity.read.tex);
+  drawTo(curl, true);
+
+  // vorticity
+  gl.useProgram(progVorticity);
+  bindQuad(progVorticity);
+  setUniform1i(progVorticity, 'uVelocity', 0);
+  setUniform1i(progVorticity, 'uCurl', 1);
+  setUniform2(progVorticity, 'texelSize', texelSize.x, texelSize.y);
+  setUniform1(progVorticity, 'curl', CONFIG.CURL);
+  setUniform1(progVorticity, 'dt', dt);
+  attachTex(0, velocity.read.tex);
+  attachTex(1, curl.tex);
+  drawTo(velocity.write);
+  velocity.swap();
+
+  // divergence
+  gl.useProgram(progDivergence);
+  bindQuad(progDivergence);
+  setUniform1i(progDivergence, 'uVelocity', 0);
+  setUniform2(progDivergence, 'texelSize', texelSize.x, texelSize.y);
+  attachTex(0, velocity.read.tex);
+  drawTo(divergence, true);
+
+  // clear pressure
+  gl.useProgram(progClear);
+  bindQuad(progClear);
+  setUniform1i(progClear, 'uTexture', 0);
+  setUniform1(progClear, 'value', CONFIG.PRESSURE);
+  attachTex(0, pressure.read.tex);
+  drawTo(pressure.write);
+  pressure.swap();
+
+  // Jacobi iterations
+  gl.useProgram(progPressure);
+  bindQuad(progPressure);
+  setUniform1i(progPressure, 'uPressure', 0);
+  setUniform1i(progPressure, 'uDivergence', 1);
+  setUniform2(progPressure, 'texelSize', texelSize.x, texelSize.y);
+  for (let i=0; i<CONFIG.PRESSURE_ITERATIONS; i++){
+    attachTex(0, pressure.read.tex);
+    attachTex(1, divergence.tex);
+    drawTo(pressure.write);
+    pressure.swap();
+  }
+
+  // subtract gradient
+  gl.useProgram(progGradSub);
+  bindQuad(progGradSub);
+  setUniform1i(progGradSub, 'uPressure', 0);
+  setUniform1i(progGradSub, 'uVelocity', 1);
+  setUniform2(progGradSub, 'texelSize', texelSize.x, texelSize.y);
+  attachTex(0, pressure.read.tex);
+  attachTex(1, velocity.read.tex);
+  drawTo(velocity.write);
+  velocity.swap();
+
+  // advect velocity
+  gl.useProgram(progAdvection);
+  bindQuad(progAdvection);
+  setUniform1i(progAdvection, 'uVelocity', 0);
+  setUniform1i(progAdvection, 'uSource', 1);
+  setUniform2(progAdvection, 'texelSize', texelSize.x, texelSize.y);
+  setUniform1(progAdvection, 'dt', dt);
+  setUniform1(progAdvection, 'dissipation', CONFIG.VELOCITY_DISSIPATION);
+  attachTex(0, velocity.read.tex);
+  attachTex(1, velocity.read.tex);
+  drawTo(velocity.write);
+  velocity.swap();
+
+  // advect dye
+  gl.useProgram(progAdvection);
+  bindQuad(progAdvection);
+  setUniform1i(progAdvection, 'uVelocity', 0);
+  setUniform1i(progAdvection, 'uSource', 1);
+  setUniform2(progAdvection, 'texelSize', texelSize.x, texelSize.y);
+  setUniform1(progAdvection, 'dt', dt);
+  setUniform1(progAdvection, 'dissipation', CONFIG.DENSITY_DISSIPATION);
+  attachTex(0, velocity.read.tex);
+  attachTex(1, dye.read.tex);
+  drawTo(dye.write);
+  dye.swap();
+
+  // display
+  gl.useProgram(progDisplay);
+  bindQuad(progDisplay);
+  setUniform1i(progDisplay, 'uTexture', 0);
+  setUniform2(progDisplay, 'texelSize', 1.0 / gl.drawingBufferWidth, 1.0 / gl.drawingBufferHeight);
+  gl.uniform1i(gl.getUniformLocation(progDisplay, 'shading'), CONFIG.SHADING ? 1 : 0);
+  attachTex(0, dye.read.tex);
+  drawTo(null);
+
+  requestAnimationFrame(update);
+}
+
+/* =======================
+   Запуск / ресайз
+   ======================= */
+function fitCanvasToScreen(){
+  canvas.style.width  = '100vw';
+  canvas.style.height = '100vh';
+  resizeCanvas();
+}
+window.addEventListener('resize', fitCanvasToScreen);
+fitCanvasToScreen();
+createFBOs();
+requestAnimationFrame(update);
+
+/* Доп: одиночный всплеск по клику (как в исходнике) */
+function splat(nx, ny, fx, fy, color){
+  const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
+
+  // скорость
+  gl.useProgram(progSplat);
+  bindQuad(progSplat);
+  setUniform1i(progSplat, 'uTarget', 0);
+  setUniform1(progSplat, 'aspectRatio', aspect);
+  setUniform2(progSplat, 'point', nx, ny);
+  setUniform1(progSplat, 'radius', CONFIG.SPLAT_RADIUS * (aspect>1.0 ? aspect : 1.0));
+  gl.uniform3f(gl.getUniformLocation(progSplat, 'color'), fx, -fy, 0.0);
+  attachTex(0, velocity.read.tex);
+  drawTo(velocity.write);
+  velocity.swap();
+
+  // краска
+  gl.useProgram(progSplat);
+  setUniform1i(progSplat, 'uTarget', 0);
+  setUniform1(progSplat, 'aspectRatio', aspect);
+  setUniform2(progSplat, 'point', nx, ny);
+  setUniform1(progSplat, 'radius', CONFIG.SPLAT_RADIUS * (aspect>1.0 ? aspect : 1.0));
+  gl.uniform3f(gl.getUniformLocation(progSplat, 'color'), color[0], color[1], color[2]);
+  attachTex(0, dye.read.tex);
+  drawTo(dye.write);
+  dye.swap();
+}
+</script>
+</script>
+</body>
+</html>
