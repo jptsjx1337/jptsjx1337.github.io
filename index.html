@@ -564,6 +564,7 @@ window.addEventListener('touchmove', (e)=>{
   pointer.dy = pointer.y - pointer.py;
   pointer.moved = true;
   if (!CONFIG.DRAW_ONLY_WHEN_PRESSED || pointer.down) {
+    pointer.color = BlueColor();
     applyPointer();
   }
 }, {passive:true});
