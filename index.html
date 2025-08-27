@@ -11,14 +11,12 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Canvas Paint Effect -->
   <canvas id="paint"></canvas>
 
   <header class="site-header">
     <div class="container header-inner glass">
       <img src="assets/avatar.PNG" class="logo">
       <nav class="nav">
-        <!-- Intentionally minimal per user's spec; no 'Are you looking for a talent?' and no GitHub stars -->
         <a class="nav-link" href="#projects">Projects</a>
         <a class="nav-link" href="#chat">Ask me</a>
         <a class="nav-link" href="#contact">Contact</a>
@@ -69,7 +67,7 @@
       </div>
     </section>
 
-    <!-- ASK ME ANYTHING (scripted keywords, not AI) -->
+    <!-- ASK ME ANYTHING -->
     <section id="chat" class="container section">
       <h2 class="section-title">Ask me anything</h2>
       <p class="muted">This chat uses predefined keywords and answers (no AI). Type a greeting or one of the keywords to see a response.</p>
@@ -124,26 +122,21 @@
 <canvas id="fluid"></canvas>
 
 <script>
-/* =======================
-   Простые настройки
-   ======================= */
 const CONFIG = {
   SIM_RESOLUTION: 128,
-  DYE_RESOLUTION: 1024,
+  DYE_RESOLUTION: 2048,
   DENSITY_DISSIPATION: 0.5,
   VELOCITY_DISSIPATION: 2.5,
   PRESSURE: 0.8,
   PRESSURE_ITERATIONS: 20,
   CURL: 20.0,
-  SPLAT_RADIUS: 0.01,      // относительный радиус (0..1 от меньшей стороны)
+  SPLAT_RADIUS: 0.01,      
   SPLAT_FORCE: 5000.0,
   SHADING: true,
-  DRAW_ONLY_WHEN_PRESSED: false, // <-- рисовать только при зажатой мыши
+  DRAW_ONLY_WHEN_PRESSED: false, 
 };
 
-/* =======================
-   Вспомогалки
-   ======================= */
+
 function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
 function createFBO(gl, w, h, internalFormat, format, type, filter) {
   const tex = gl.createTexture();
@@ -197,9 +190,7 @@ function createProgram(gl, vsSource, fsSource) {
   return p;
 }
 
-/* =======================
-   Шейдеры
-   ======================= */
+
 const baseVertexShader = `
 precision highp float;
 attribute vec2 aPosition;
@@ -382,9 +373,7 @@ void main(){
 }
 `;
 
-/* =======================
-   Инициализация WebGL
-   ======================= */
+
 const canvas = document.getElementById('fluid');
 const gl = (() => {
   const params = { alpha: true, depth: false, stencil: false, antialias: false, preserveDrawingBuffer: false };
@@ -414,7 +403,7 @@ const RG16F  = (gl instanceof WebGL2RenderingContext) ? gl.RG16F  : gl.RGBA;
 const R16F   = (gl instanceof WebGL2RenderingContext) ? gl.R16F   : gl.RGBA;
 const LINEAR = supportLinear ? gl.LINEAR : gl.NEAREST;
 
-/* Фуллскрин-квад */
+
 const quadVBO = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, quadVBO);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -445,7 +434,7 @@ function drawTo(targetFBO, clear = false){
   gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
 }
 
-/* Программы */
+
 const progCopy        = createProgram(gl, baseVertexShader, copyShader);
 const progClear       = createProgram(gl, baseVertexShader, clearShader);
 const progDisplay     = createProgram(gl, baseVertexShader, displayShader);
@@ -457,7 +446,7 @@ const progVorticity   = createProgram(gl, baseVertexShader, vorticityShader);
 const progPressure    = createProgram(gl, baseVertexShader, pressureShader);
 const progGradSub     = createProgram(gl, baseVertexShader, gradSubtractShader);
 
-/* Буферы */
+
 let velocity, dye, pressure, divergence, curl, texelSize = { x: 1, y: 1 };
 function createFBOs() {
   const sim = getResolution(CONFIG.SIM_RESOLUTION);
@@ -495,9 +484,7 @@ function attachTex(unit, tex){
   gl.bindTexture(gl.TEXTURE_2D, tex);
 }
 
-/* =======================
-   Ввод (мышь/тач)
-   ======================= */
+
 let pointer = {
   down: false,
   moved: false,
@@ -507,7 +494,7 @@ let pointer = {
   color: randColor(),
 };
 function randColor(){
-  // насыщенные цвета, дальше слегка приглушим
+
   let h = Math.random();
   let r,g,b;
   const i = Math.floor(h*6);
@@ -521,7 +508,7 @@ function randColor(){
     case 4: r=f; g=0; b=1; break;
     case 5: r=1; g=0; b=q; break;
   }
-  // приглушаем, чтобы на черном было не кислотно
+
   return [r*0.15, g*0.15, b*0.15];
 }
 function BlueColor() {
@@ -541,7 +528,7 @@ window.addEventListener('mousedown', (e)=>{
   pointer.x = pointer.px = p.x; pointer.y = pointer.py = p.y;
   pointer.dx = pointer.dy = 0;
   pointer.color = randColor();
-  // стартовый сплэт — красивый всплеск
+
   splat(pointer.x, pointer.y, (Math.random()-0.5)*10.0, (Math.random()-0.5)*30.0, [pointer.color[0]*10, pointer.color[1]*10, pointer.color[2]*10]);
 });
 window.addEventListener('mouseup', ()=>{ pointer.down = false; });
@@ -558,7 +545,7 @@ window.addEventListener('mousemove', (e)=>{
   }
 });
 
-/* Тач */
+
 window.addEventListener('touchstart', (e)=>{
   if (CONFIG.DRAW_ONLY_WHEN_PRESSED) pointer.down = true;
   const t = e.targetTouches[0];
@@ -581,20 +568,20 @@ window.addEventListener('touchmove', (e)=>{
   }
 }, {passive:true});
 
-/* Применение ввода: «splat» в скорость + краску */
+
 function applyPointer(){
   if (!pointer.moved) return;
   const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
   const fX = pointer.dx * CONFIG.SPLAT_FORCE;
   const fY = -pointer.dy * CONFIG.SPLAT_FORCE;
 
-  // В скорость — векторный сплэт (здесь кладем силу в цвет (x,y,0))
+
   gl.useProgram(progSplat);
   setUniform1i(progSplat, 'uTarget', 0);
   setUniform1(progSplat, 'aspectRatio', aspect);
   setUniform2(progSplat, 'point', pointer.x, pointer.y);
   setUniform1(progSplat, 'radius', CONFIG.SPLAT_RADIUS * (aspect>1.0 ? aspect : 1.0));
-  // цвет как сила: (fx, fy, 0)
+
   const velColor = [fX, fY, 0.0];
   gl.uniform3f(gl.getUniformLocation(progSplat, 'color'), velColor[0], velColor[1], velColor[2]);
   bindQuad(progSplat);
@@ -602,7 +589,7 @@ function applyPointer(){
   drawTo(velocity.write);
   velocity.swap();
 
-  // В краску — цветной сплэт
+
   gl.useProgram(progSplat);
   setUniform1i(progSplat, 'uTarget', 0);
   setUniform1(progSplat, 'aspectRatio', aspect);
@@ -615,17 +602,15 @@ function applyPointer(){
   dye.swap();
 }
 
-/* =======================
-   Симуляция
-   ======================= */
+
 let lastTime = performance.now();
 function update(){
   const now = performance.now();
   let dt = (now - lastTime) / 1000.0;
   lastTime = now;
-  dt = Math.min(dt, 1/30); // стабильность
+  dt = Math.min(dt, 1/30); 
 
-  // curl
+
   gl.useProgram(progCurl);
   bindQuad(progCurl);
   setUniform1i(progCurl, 'uVelocity', 0);
@@ -633,7 +618,7 @@ function update(){
   attachTex(0, velocity.read.tex);
   drawTo(curl, true);
 
-  // vorticity
+
   gl.useProgram(progVorticity);
   bindQuad(progVorticity);
   setUniform1i(progVorticity, 'uVelocity', 0);
@@ -646,7 +631,7 @@ function update(){
   drawTo(velocity.write);
   velocity.swap();
 
-  // divergence
+
   gl.useProgram(progDivergence);
   bindQuad(progDivergence);
   setUniform1i(progDivergence, 'uVelocity', 0);
@@ -654,7 +639,7 @@ function update(){
   attachTex(0, velocity.read.tex);
   drawTo(divergence, true);
 
-  // clear pressure
+
   gl.useProgram(progClear);
   bindQuad(progClear);
   setUniform1i(progClear, 'uTexture', 0);
@@ -663,7 +648,7 @@ function update(){
   drawTo(pressure.write);
   pressure.swap();
 
-  // Jacobi iterations
+
   gl.useProgram(progPressure);
   bindQuad(progPressure);
   setUniform1i(progPressure, 'uPressure', 0);
@@ -676,7 +661,7 @@ function update(){
     pressure.swap();
   }
 
-  // subtract gradient
+
   gl.useProgram(progGradSub);
   bindQuad(progGradSub);
   setUniform1i(progGradSub, 'uPressure', 0);
@@ -687,7 +672,7 @@ function update(){
   drawTo(velocity.write);
   velocity.swap();
 
-  // advect velocity
+
   gl.useProgram(progAdvection);
   bindQuad(progAdvection);
   setUniform1i(progAdvection, 'uVelocity', 0);
@@ -700,7 +685,7 @@ function update(){
   drawTo(velocity.write);
   velocity.swap();
 
-  // advect dye
+
   gl.useProgram(progAdvection);
   bindQuad(progAdvection);
   setUniform1i(progAdvection, 'uVelocity', 0);
@@ -713,7 +698,7 @@ function update(){
   drawTo(dye.write);
   dye.swap();
 
-  // display
+
   gl.useProgram(progDisplay);
   bindQuad(progDisplay);
   setUniform1i(progDisplay, 'uTexture', 0);
@@ -725,9 +710,7 @@ function update(){
   requestAnimationFrame(update);
 }
 
-/* =======================
-   Запуск / ресайз
-   ======================= */
+
 function fitCanvasToScreen(){
   canvas.style.width  = '100vw';
   canvas.style.height = '100vh';
@@ -738,11 +721,11 @@ fitCanvasToScreen();
 createFBOs();
 requestAnimationFrame(update);
 
-/* Доп: одиночный всплеск по клику (как в исходнике) */
+
 function splat(nx, ny, fx, fy, color){
   const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
 
-  // скорость
+
   gl.useProgram(progSplat);
   bindQuad(progSplat);
   setUniform1i(progSplat, 'uTarget', 0);
@@ -754,7 +737,7 @@ function splat(nx, ny, fx, fy, color){
   drawTo(velocity.write);
   velocity.swap();
 
-  // краска
+
   gl.useProgram(progSplat);
   setUniform1i(progSplat, 'uTarget', 0);
   setUniform1(progSplat, 'aspectRatio', aspect);
